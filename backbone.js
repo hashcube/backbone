@@ -142,6 +142,7 @@
     this.set(attributes, {silent : true});
     this._changed = false;
     this._previousAttributes = _.clone(this.attributes);
+    this._persistentPrevious = _.clone(this.attributes);
     if (options && options.collection) this.collection = options.collection;
     this.initialize(attributes, options);
   };
@@ -212,6 +213,9 @@
       for (var attr in attrs) {
         var val = attrs[attr];
         if (!_.isEqual(now[attr], val)) {
+          if(now[attr] || now[attr] === '' || now[attr] === 0) {
+            this._persistentPrevious[attr] = now[attr];
+          }
           now[attr] = val;
           delete escaped[attr];
           this._changed = true;
@@ -240,6 +244,7 @@
       // Remove the attribute.
       delete this.attributes[attr];
       delete this._escapedAttributes[attr];
+      delete this._previousAttributes[attr];
       if (attr == this.idAttribute) delete this.id;
       this._changed = true;
       if (!options.silent) {
@@ -382,6 +387,11 @@
     previous : function(attr) {
       if (!attr || !this._previousAttributes) return null;
       return this._previousAttributes[attr];
+    },
+
+    pprevious : function(attr) {
+      if (!attr || !this._persistentPrevious) return null;
+      return this._persistentPrevious[attr];
     },
 
     // Get all of the attributes of the model at the time of the previous
