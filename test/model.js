@@ -219,7 +219,7 @@ $(document).ready(function() {
     equals(model.get('two'), null);
   });
 
-  test("Model: change, hasChanged, changedAttributes, previous, previousAttributes", function() {
+  test("Model: change, hasChanged, changedAttributes, previous, previousAttributes, pprevious", function() {
     var model = new Backbone.Model({name : "Tim", age : 10});
     equals(model.changedAttributes(), false);
     model.bind('change', function() {
@@ -234,6 +234,7 @@ $(document).ready(function() {
     equals(model.hasChanged('name'), true);
     model.change();
     equals(model.get('name'), 'Rob');
+    equals(model.pprevious('name'), 'Tim');
   });
 
   test("Model: change with options", function() {
