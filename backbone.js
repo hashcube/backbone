@@ -389,6 +389,8 @@
       return this._previousAttributes[attr];
     },
 
+    // Get the persistent previous value of an attribute. This value persists 
+    // until set is called
     pprevious : function(attr) {
       if (!attr || !this._persistentPrevious) return null;
       return this._persistentPrevious[attr];
